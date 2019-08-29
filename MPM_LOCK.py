@@ -12,7 +12,8 @@ def generate_setting_file():
                  'Build ID\n', '\t19WWMRAT6ae#SABA#DABA\n',
                  'Manufacturing Programming Mode\n', '\tUnlock\n','\t*Lock\n'
                  'HBMA Factory MAC Address\n', '\t12-34-56-78-90-AB\n',
-                 'HBMA System MAC Address\n', '\t12-34-56-78-90-AB\n',]
+                 'HBMA System MAC Address\n', '\t12-34-56-78-90-AB\n',
+                 'Fast Boot\n','\tDisable\n','\t*Enable\n']
 
     # revise_list = []
 
