@@ -1,5 +1,6 @@
 import os
 import subprocess
+import win32api
 
 def generate_setting_file():
     
@@ -8,7 +9,7 @@ def generate_setting_file():
                  'Serial Number\n','\tCND84956VJ\n',
                  'SKU Number\n','\t123456#ABA\n',
                  'System Board CT Number\n','\tPXXXXA51UBNPVS\n',
-                 'Feature Byte\n', '\t3X476J6S6b7B7H7M7R7W7m7saBapaqaubTbhcAd6dUdpdqfAfXguhKhZjh.4Q\n',
+                 'Feature Byte\n', '\t7R.3R\n',
                  'Build ID\n', '\t19WWMRAT6ae#SABA#DABA\n',
                  'Manufacturing Programming Mode\n', '\tUnlock\n','\t*Lock\n'
                  'HBMA Factory MAC Address\n', '\t12-34-56-78-90-AB\n',
@@ -17,7 +18,7 @@ def generate_setting_file():
 
     # revise_list = []
 
-    with open('setting_file.txt','w') as f1:
+    with open('MPM_LOCK.txt','w') as f1:
         f1.writelines(item_list)
 
     print(item_list)
@@ -38,14 +39,15 @@ def generate_setting_file():
 if __name__ == '__main__':
 
     # generate the setting file
-    generate_setting_file()
-    
+    # generate_setting_file()
+    # print("Hello world")
+
     # implement setting and remiove file
-    # myCmd = 'BiosConfigUtility64.exe /set:current.txt'
-    # os.system(myCmd)
+    myCmd = "BiosConfigUtility64.exe /set:MPM_LOCK.txt"
+    os.system(myCmd)
 
-    working_path = os.getcwd()
-    print(working_path)
-    os.remove('setting_file.txt')
-
-    # os.system('shutdown \r \t 1')
+    # working_path = os.getcwd()
+    # print(working_path)
+    # os.remove('setting_file.txt')
+    print("Reboot....")
+    os.system("shutdown /r /t 3")
