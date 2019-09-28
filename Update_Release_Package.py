@@ -4,13 +4,14 @@ import tkinter as tk
 from os.path import basename
 
 def Copy_all_files(src_path, des_path):
-    File_list = os.listdir(des_path)
-    print("Destination path : " + src_path)
+    File_list = os.listdir(src_path)
+    print("Destination path : " + des_path)
     for item in File_list:
-        file_full_path = os.path.join(des_path, item)
-        print('File {file_name} copy to {des_folder_path}'.format(file_name=item ,des_folder_path=src_path))
+        file_full_path = os.path.join(src_path, item)
+        print('File {file_name} copy to {des_folder_path}'.format(file_name=item ,des_folder_path=des_path))
         try:
-            shutil.copy(file_full_path, src_path)
+            #shutil.copy(file_full_path, des_path)
+            print("hello")
         except IOError as e:
             print("Unable to copy file. %s" % e)
         except:
@@ -22,17 +23,17 @@ def Delete_all_files(path):
     for item in input_path:
         file_path = os.path.join(path, item)
         print(file_path)
-        os.remove(file_path)
+        #os.remove(file_path)
 
-def Replace_all_files(old, new):
+def Replace_all_files(package_path, server_package_path):
     """
-    Delet all files under old path, 
-    and copy all files from new to old.
+    Delet all files under package_path path, 
+    and copy all files from server_package_path to package_path.
     """
-    if os.path.isdir(old) and os.path.isdir(new):
+    if os.path.isdir(package_path) and os.path.isdir(server_package_path):
         print("Both of paths exits")
-        Delete_all_files(old)
-        Copy_all_files(old, new)
+        Delete_all_files(package_path)
+        Copy_all_files(server_package_path, package_path, )
     else:
         print("Unvalid dir path")
 
