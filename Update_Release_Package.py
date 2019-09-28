@@ -3,22 +3,18 @@ import os
 import tkinter as tk
 from os.path import basename
 
-def Copy_all_files(old_path, new_path):
-    new_files = os.listdir(new_path)
-
-    print(new_path)
-    for item in new_files:
-        d = os.path.join(new_path)
-        print('File {src} copy to {des}'.format(src=item ,des=d))
-        # try:
-        #     shutil.copy(source, target)
-        # except IOError as e:
-        #     print("Unable to copy file. %s" % e)
-        # except:
-        #     print("Unexpected error:", sys.exc_info())
-
-
-        
+def Copy_all_files(src_path, des_path):
+    File_list = os.listdir(des_path)
+    print("Destination path : " + src_path)
+    for item in File_list:
+        file_full_path = os.path.join(des_path, item)
+        print('File {file_name} copy to {des_folder_path}'.format(file_name=item ,des_folder_path=src_path))
+        try:
+            shutil.copy(file_full_path, src_path)
+        except IOError as e:
+            print("Unable to copy file. %s" % e)
+        except:
+            print("Unexpected error:", sys.exc_info())
 
 def Delete_all_files(path):
     input_path = os.listdir(path)
@@ -35,7 +31,7 @@ def Replace_all_files(old, new):
     """
     if os.path.isdir(old) and os.path.isdir(new):
         print("Both of paths exits")
-        #Delete_all_files(old)
+        Delete_all_files(old)
         Copy_all_files(old, new)
     else:
         print("Unvalid dir path")
@@ -47,13 +43,6 @@ def Replace_all_files(old, new):
 #     console = tk.Label(window, text='Welcome use the tool',font=('Arial',14), width=30, height=2)
 #     console.pack()
 #     window.mainloop()
-
-def displayFileStats(filename):
-    file_stats = os.stat(basename(filename))
-    print('\tMode    :', file_stats.st_mode)
-    print('\tCreated :', time.ctime(file_stats.st_ctime))
-    print('\tAccessed:', time.ctime(file_stats.st_atime))
-    print('\tModified:', time.ctime(file_stats.st_mtime))
 
 if __name__ == '__main__':
     # create an windows to fetch the folder path
