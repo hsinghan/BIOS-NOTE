@@ -9,7 +9,7 @@ def Delete_all_files(path):
     for item in input_path:
         file_path = os.path.join(path, item)
         print(file_path)
-        #shutil.rmtree(file_path)
+        os.remove(file_path)
 
 
 def Replace_all_files(old, new):
@@ -21,7 +21,6 @@ def Replace_all_files(old, new):
         print("Both of paths exits")
         Delete_all_files(old)
         #Copy_all_files(old, new)
-
     else:
         print("Unvalid dir path")
 
@@ -38,5 +37,5 @@ if __name__ == '__main__':
     # create an windows to fetch the folder path
     # Initial_Windows()
     # update files
-    Replace_all_files("C:\\Users\\green\\OneDrive\\桌面\\test1", "C:\\Users\\green\\OneDrive\\桌面\\test2")
+    Replace_all_files("C:\\github_repo\\BIOS-NOTE\\test1", "C:\\github_repo\\BIOS-NOTE\\test2")
 
