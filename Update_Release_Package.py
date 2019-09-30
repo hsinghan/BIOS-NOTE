@@ -43,7 +43,7 @@ class Root(Tk):
         super(Root, self).__init__()
         self.title('Update Release Package(Beta version)')
         self.geometry('600x400')
-
+        self.wm_iconbitmap('coffee.ico')
         self.creatWidgets("Choose server package folder path", 0, 0)
         # self.labelFrame = ttk.LabelFrame(self, text = "Choose server package folder path")
         # self.labelFrame.grid(column = 0, row = 1, padx = 20, pady = 20)
