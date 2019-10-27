@@ -50,10 +50,20 @@ class Root(Tk):
         self.geometry('800x600')
         self.wm_iconbitmap('coffee.ico')
 
-        self.creatLabel('Choose release package folder path',x=0, y=0)
+        msg1 = tk.Label(self, text='Choose release package folder path', font=('Arial', 12), width=0, height=2)
+        msg1.place(x=0, y=0)
+
         self.labelFrame = ttk.LabelFrame(self, text = "")
         self.labelFrame.place(x=0, y=30)
-        self.Browse_button()
+        self.button = tk.Button(self.labelFrame, text = "Browse A File",command = self.fileDialog)
+        self.button.grid(column = 0, row = 1)
+
+        msg1 = tk.Label(self, text='Enter New BIOS Version:', font=('Arial', 12), width=0, height=2)
+        msg1.place(x=0, y=75)
+
+        new_version = tk.Entry(self, show=None, font=('Arial', 12))  # 顯示成明文形式
+        new_version.place(x=180, y=85)
+
 
         # self.creatLabel('Choose release package folder path',x=0, y=200)
         # self.labelFrame = ttk.LabelFrame(self, text = "")
@@ -74,7 +84,7 @@ class Root(Tk):
     def fileDialog(self):
         self.filename = filedialog.askdirectory()
         self.label = ttk.Label(self.labelFrame, text = self.filename)
-        self.label.grid(column = 1, row = 2)
+        self.label.grid(column = 1, row = 1)
 
     def creatLabel(self, string_text, x, y):
         # 說明： bg為背景，font為字型，width為長，height為高，
