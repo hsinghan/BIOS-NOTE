@@ -1,0 +1,23 @@
+BIOSConfig 1.0
+Product Name
+	HP ZBook 15c G7
+Serial Number
+	CND84956VJ
+SKU Number
+	123456#ABA
+System Board CT Number
+	PXXXXA51UBNPVS
+Feature Byte
+	7R.3R
+Build ID
+	19WWMRAT6ae#SABA#DABA
+Manufacturing Programming Mode
+	Unlock
+	*Lock
+HBMA Factory MAC Address
+	12-34-56-78-90-AB
+HBMA System MAC Address
+	12-34-56-78-90-AB
+Fast Boot
+	Disable
+	*Enable
