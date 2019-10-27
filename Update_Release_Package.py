@@ -1,8 +1,13 @@
 import shutil
 import os
 from tkinter import *
+import tkinter as tk 
 from tkinter import ttk
 from tkinter import filedialog
+
+Project_Code = ""    # Ex : S91
+New_Version_Num = "" # Ex : 000200
+Old_Version_Num = "" # Ex : 000100
 
 def Copy_all_files(src_path, des_path):
     File_list = os.listdir(src_path)
@@ -42,15 +47,18 @@ class Root(Tk):
     def __init__(self):
         super(Root, self).__init__()
         self.title('Update Release Package(Beta version)')
-        self.geometry('600x400')
+        self.geometry('800x600')
         self.wm_iconbitmap('coffee.ico')
-        self.creatWidgets("Choose server package folder path", 0, 0)
-        # self.labelFrame = ttk.LabelFrame(self, text = "Choose server package folder path")
-        # self.labelFrame.grid(column = 0, row = 1, padx = 20, pady = 20)
-        
-        # self.button()
-        
-        self.creatWidgets("Choose release package folder path", 0, 20)
+
+        self.creatLabel('Choose release package folder path',x=0, y=0)
+        self.labelFrame = ttk.LabelFrame(self, text = "")
+        self.labelFrame.place(x=0, y=30)
+        self.Browse_button()
+
+        # self.creatLabel('Choose release package folder path',x=0, y=200)
+        # self.labelFrame = ttk.LabelFrame(self, text = "")
+        # self.labelFrame.place(x=0, y=230)
+        # self.Browse_button()
         # Prevent Window From Resizing
         #self.resizable(False, False)
 
@@ -58,20 +66,24 @@ class Root(Tk):
         #Set logo
         #self.wm_iconbitmap('file_name')
 
-    def button(self):
-        self.button = ttk.Button(self.labelFrame, text = "Browse A File",command = self.fileDialog)
-        self.button.grid(column = 1, row = 1)
+    def Browse_button(self):
+        self.button = tk.Button(self.labelFrame, text = "Browse A File",command = self.fileDialog)
+        #self.button.grid(column = 0, row = 1)
+        self.button.grid(column = 0, row = 1)
 
     def fileDialog(self):
-        self.filename = filedialog.askopenfilename(initialdir =  "/", title = "Select A File", filetype =
-        (("jpeg files","*.jpg"),("all files","*.*")) )
-        self.label = ttk.Label(self.labelFrame, text = "")
+        self.filename = filedialog.askdirectory()
+        self.label = ttk.Label(self.labelFrame, text = self.filename)
         self.label.grid(column = 1, row = 2)
-        self.label.configure(text = self.filename)
 
-    def creatWidgets(self, string_text, x, y):
-        self.label = Label(self, text = string_text, font=('Arial', 12), width=40,anchor=W,pady=5)
-        self.label.grid(column = x, row = y)
+    def creatLabel(self, string_text, x, y):
+        # 說明： bg為背景，font為字型，width為長，height為高，
+        # 這裡的長和高是字元的長和高，比如height=2,就是標籤有2個字元這麼高
+        msg1 = tk.Label(self, text=string_text, font=('Arial', 13), width=0, height=2)
+        msg1.place(x=x, y=y)
+
+    def client_exit(self):
+        exit()
 
 
 if __name__ == '__main__':
