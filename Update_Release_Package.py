@@ -42,64 +42,69 @@ def Replace_all_files(package_path, server_package_path):
     else:
         print("Unvalid dir path")
 
-class Root(Tk):
-    """docstring for Root"""
-    def __init__(self):
-        super(Root, self).__init__()
-        self.title('Update Release Package(Beta version)')
-        self.geometry('800x600')
-        self.wm_iconbitmap('coffee.ico')
+def callbackFunc():
+    resultString.set("{} -".format(landString.get()))
 
-        msg1 = tk.Label(self, text='Choose release package folder path', font=('Arial', 12), width=0, height=2)
-        msg1.place(x=0, y=0)
+def fileDialog():
+    app_windows.filename = filedialog.askdirectory()
+    app_windows.label = ttk.Label(app_windows.labelFrame, text = app_windows.filename)
+    app_windows.label.grid(column = 1, row = 1)
 
-        self.labelFrame = ttk.LabelFrame(self, text = "")
-        self.labelFrame.place(x=0, y=30)
-        self.button = tk.Button(self.labelFrame, text = "Browse A File",command = self.fileDialog)
-        self.button.grid(column = 0, row = 1)
+def Browse_button(app_windows, x, y):
+    app_windows.button = tk.Button(app_windows.labelFrame, text = "Browse A Folder",command = fileDialog)
+    #app_windows.button.grid(column = 0, row = 1)
+    app_windows.button.grid(column = x, row = y)
 
-        msg1 = tk.Label(self, text='Enter New BIOS Version:', font=('Arial', 12), width=0, height=2)
-        msg1.place(x=0, y=75)
+def creatLabel(app_windows, string_text, x, y):
+    # 說明： bg為背景，font為字型，width為長，height為高，
+    # 這裡的長和高是字元的長和高，比如height=2,就是標籤有2個字元這麼高
+    msg1 = tk.Label(app_windows, text=string_text, font=('Arial', 13), width=0, height=2)
+    msg1.place(x=x, y=y)
 
-        new_version = tk.Entry(self, show=None, font=('Arial', 12))  # 顯示成明文形式
-        new_version.place(x=180, y=85)
-
-
-        # self.creatLabel('Choose release package folder path',x=0, y=200)
-        # self.labelFrame = ttk.LabelFrame(self, text = "")
-        # self.labelFrame.place(x=0, y=230)
-        # self.Browse_button()
-        # Prevent Window From Resizing
-        #self.resizable(False, False)
-
-        #self.configure(background = '#4D4D4D')
-        #Set logo
-        #self.wm_iconbitmap('file_name')
-
-    def Browse_button(self):
-        self.button = tk.Button(self.labelFrame, text = "Browse A File",command = self.fileDialog)
-        #self.button.grid(column = 0, row = 1)
-        self.button.grid(column = 0, row = 1)
-
-    def fileDialog(self):
-        self.filename = filedialog.askdirectory()
-        self.label = ttk.Label(self.labelFrame, text = self.filename)
-        self.label.grid(column = 1, row = 1)
-
-    def creatLabel(self, string_text, x, y):
-        # 說明： bg為背景，font為字型，width為長，height為高，
-        # 這裡的長和高是字元的長和高，比如height=2,就是標籤有2個字元這麼高
-        msg1 = tk.Label(self, text=string_text, font=('Arial', 13), width=0, height=2)
-        msg1.place(x=x, y=y)
-
-    def client_exit(self):
-        exit()
-
+def client_exit(app_windows):
+    exit()
 
 if __name__ == '__main__':
     # create an windows to fetch the folder path
-    root = Root()
-    root.mainloop()
+
+    app_windows = tk.Tk() 
+    
+    app_windows.title('Update Release Package(Beta version)')
+    app_windows.geometry('400x400')
+    app_windows.wm_iconbitmap('coffee.ico')
+    # Prevent Window From Resizing
+    #app_windows.resizable(False, False)
+
+    #app_windows.configure(background = '#4D4D4D')
+    #Set logo
+    #app_windows.wm_iconbitmap('file_name')
+
+    msg1 = tk.Label(app_windows, text='Choose release package folder path', font=('Arial', 12), width=0, height=2)
+    msg1.place(x=0, y=0)
+
+    app_windows.labelFrame = ttk.LabelFrame(app_windows, text = "")
+    app_windows.labelFrame.place(x=0, y=30)
+    # app_windows.button = tk.Button(app_windows.labelFrame, text = "Browse A Folder",command = app_windows.fileDialog)
+    # app_windows.button.grid(column = 0, row = 1)
+    Browse_button(app_windows,0, 1)
+
+    msg1 = tk.Label(app_windows, text='Enter New BIOS Version:', font=('Arial', 12), width=0, height=2)
+    msg1.place(x=0, y=75)
+
+    landString = tk.StringVar()
+    version_text_field = tk.Entry(app_windows, show=None, font=('Arial', 12), width=20, textvariable=landString)  # 顯示成明文形式
+    version_text_field.place(x=180, y=85)
+
+    resultButton = tk.Button(app_windows, text = 'Get Result', command=callbackFunc)
+    resultButton.place(x=0, y=300)
+
+    resultString = tk.StringVar()
+    resultLabel = tk.Label(app_windows, textvariable=resultString)
+    New_Version_Num = resultString.get()
+    print('haha')
+    resultLabel.place(x=100, y=300)
+
 
     # update files
     #Replace_all_files("C:\\github_repo\\BIOS-NOTE\\test1", "C:\\github_repo\\BIOS-NOTE\\test2")
+    app_windows.mainloop()
