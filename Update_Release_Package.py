@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from pathlib import Path
+from tkinter import messagebox
 
 Project_Code    = "" # Ex : S91
 New_Version_Num = "" # Ex : 000200
@@ -58,6 +59,18 @@ def Replace_all_files(package_path, server_package_path):
     else:
         print("Unvalid dir path")
 
+def check_path_and_version():
+    if New_Version_Num == "":
+        show_Message("The New BIOS Version can not be empty")
+        # TODO 
+        # Check if the input value is valid
+        return
+
+    if Old_Version_Num == "":
+        show_Message("The Old BIOS Version can not be empty")
+        return
+
+    print("Version is OK!!")
 
 def Start_Update_Package():
     # data_folder = Path("source_data/text_files/")
@@ -68,6 +81,18 @@ def Start_Update_Package():
     # Update FPTW
     # Update GLOBAL
     # Update FUR
+    global New_Version_Num, Old_Version_Num
+
+    New_Version_Num = firstlandString.get()
+    Old_Version_Num = SecondlandString.get()
+    check_path_and_version()
+
+
+def show_Message(msg):
+    # hide main window
+    root = tk.Tk()
+    root.withdraw()
+    messagebox.showinfo("Notification", msg)
 
 def callbackFunc():
     resultString.set("{} - {}".format(firstlandString.get(),SecondlandString.get()))
@@ -124,12 +149,14 @@ if __name__ == '__main__':
 
     msg1 = tk.Label(app_windows, text='Enter New BIOS Version:', font=('Arial', 11), width=0, height=2)
     msg1.place(x=0, y=75)
+    msg2 = tk.Label(app_windows, text='Ex:S91_000200', font=('Arial', 10), width=0, height=2)
+    msg2.place(x=340, y=76)
 
     firstlandString = tk.StringVar()
     #firstlandString.set('S91_000800')
     version_text_field = tk.Entry(app_windows, show=None, font=('Arial', 11), width=20, textvariable=firstlandString)  # 顯示成明文形式
     version_text_field.place(x=170, y=85)
-    New_Version_Num = firstlandString.get()
+    
 # ------------------------------------------------------------------------------
     msg1 = tk.Label(app_windows, text='Choose Release package folder path', font=('Arial', 12), width=0, height=2)
     msg1.place(x=0, y=110)
@@ -140,6 +167,8 @@ if __name__ == '__main__':
 
     msg1 = tk.Label(app_windows, text='Enter Old BIOS Version:', font=('Arial', 11), width=0, height=2)
     msg1.place(x=0, y=185)
+    msg2 = tk.Label(app_windows, text='Ex:S91_000100', font=('Arial', 10), width=0, height=2)
+    msg2.place(x=360, y=185)
 
     SecondlandString = tk.StringVar()
     #SecondlandString.set('S91_000800')
