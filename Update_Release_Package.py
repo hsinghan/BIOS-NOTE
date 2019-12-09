@@ -8,11 +8,11 @@ from pathlib import Path
 from tkinter import messagebox
 
 
-New_Version_Num = "S91_000500" # Ex : S91_000200
-Old_Version_Num = "S91_000600" # Ex : S91_000100
+New_Version_Num = "" # Ex : S91_000200
+Old_Version_Num = "" # Ex : S91_000100
 
-New_Server_Package_path = "C:\\Users\\green\\OneDrive\\桌面\\ReleasePakage\\Fv_S91_000500_0000_BuildJob_10"
-Release_Package_path = "C:\\Users\\green\\OneDrive\\桌面\\ReleasePakage\\S91_Mulberry_DB_000600"
+New_Server_Package_path = ""
+Release_Package_path = ""
 
 server_package_path_list = ['\\Combined\\FUR', 
                             '\\Combined\\WU', 
@@ -71,8 +71,6 @@ def check_path_and_version():
         show_Message("The Old BIOS Version can not be empty")
         return
 
-    print("Version is OK!!")
-
 def Start_Update_Package():
     # data_folder = Path("source_data/text_files/")
     # file_to_open = data_folder / "raw_data.txt"
@@ -81,12 +79,13 @@ def Start_Update_Package():
     global New_Version_Num, Old_Version_Num
     global New_Server_Package_path, Release_Package_path
 
-    #New_Version_Num = firstlandString.get()
-    #Old_Version_Num = SecondlandString.get()
+    New_Version_Num = firstlandString.get()
+    Old_Version_Num = SecondlandString.get()
     check_path_and_version()
     # Update BUFF folder
     os.remove(Release_Package_path +'\\BUFF' + '\\' + Old_Version_Num + '_32.bin')
     shutil.copy(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , Release_Package_path +'\\BUFF')
+
     # Update Capsule folder
     
     # Update FPTW folder
@@ -94,9 +93,6 @@ def Start_Update_Package():
     # Update GLOBAL folder
 
     # Update FUR folder
-
-
-
 
 
 def show_Message(msg):
