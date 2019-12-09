@@ -8,10 +8,10 @@ from pathlib import Path
 from tkinter import messagebox
 
 
-New_Version_Num = "" # Ex : S91_000200
-Old_Version_Num = "" # Ex : S91_000100
+New_Version_Num = "" # Ex : S91_000200 
+Old_Version_Num = "" # Ex : S91_000100 
 
-New_Server_Package_path = "" 
+New_Server_Package_path = ""
 Release_Package_path = ""
 
 server_package_path_list = ['\\Combined\\FUR', 
@@ -83,8 +83,8 @@ def Start_Update_Package():
     Old_Version_Num = SecondlandString.get()
     check_path_and_version()
     # Update BUFF folder
-    os.remove(Release_Package_path +'\\BUFF' + '\\' + Old_Version_Num + '_32.bin')
-    shutil.copy(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , Release_Package_path +'\\BUFF')
+    os.remove(Release_Package_path +'\\BUFF\\' + Old_Version_Num + '_32.bin')
+    shutil.copy2(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , Release_Package_path +'\\BUFF')
 
     # Update Capsule folder
     Replace_all_files(Release_Package_path + '\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)', 
@@ -99,8 +99,26 @@ def Start_Update_Package():
     # Update FPTW folder
 
     # Update GLOBAL folder
+    os.remove(Release_Package_path +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '_32.bin')
+    shutil.copy2(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , 
+                Release_Package_path +'\\GLOBAL\\BIOS')
+
+    os.remove(Release_Package_path +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '.bin')
+    shutil.copy2(New_Server_Package_path +'\\' + New_Version_Num + '.bin' , 
+                Release_Package_path +'\\GLOBAL\\BIOS')
 
     # Update FUR folder
+    os.remove(Release_Package_path +'\\HPFWUPDREC\\' + Old_Version_Num + '.bin')
+    shutil.copy2(New_Server_Package_path +'\\Combined\\FUR\\' + New_Version_Num + '.bin' , 
+                 Release_Package_path +'\\HPFWUPDREC\\')
+
+    os.remove(Release_Package_path +'\\HPFWUPDREC\\' + Old_Version_Num + '.inf')
+    shutil.copy2(New_Server_Package_path +'\\Combined\\FUR\\' + New_Version_Num + '.inf' , 
+                 Release_Package_path +'\\HPFWUPDREC\\')
+
+    os.remove(Release_Package_path +'\\HPFWUPDREC\\' + 'CombinBuild.Log')
+    shutil.copy2(New_Server_Package_path +'\\Combined\\FUR\\' + 'CombinBuild.Log' , 
+                 Release_Package_path +'\\HPFWUPDREC\\')
 
 
 def show_Message(msg):
