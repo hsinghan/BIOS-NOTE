@@ -8,11 +8,11 @@ from pathlib import Path
 from tkinter import messagebox
 
 
-New_Version_Num = "" # Ex : S91_000200 
-Old_Version_Num = "" # Ex : S91_000100 
-
-New_Server_Package_path = ""
-Release_Package_path = ""
+New_Version_Num = "S91_000500" # Ex : S91_000200 
+Old_Version_Num = "S91_000600" # Ex : S91_000100 
+ 
+New_Server_Package_path = "C:\\Users\\green\\OneDrive\\桌面\\ReleasePakage\\Fv_S91_000500_0000_BuildJob_10" 
+Release_Package_path = "C:\\Users\\green\\OneDrive\\桌面\\ReleasePakage\\S91_Mulberry_DB_000600" 
 
 server_package_path_list = ['\\Combined\\FUR', 
                             '\\Combined\\WU', 
@@ -97,6 +97,11 @@ def Start_Update_Package():
                       New_Server_Package_path + '\\TBT')
 
     # Update FPTW folder
+    os.remove(Release_Package_path +'\\FPTW\\' + Old_Version_Num + '_32.bin')
+    shutil.copy2(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , Release_Package_path +'\\FPTW')
+
+    revise_batch_file()
+
 
     # Update GLOBAL folder
     os.remove(Release_Package_path +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '_32.bin')
@@ -120,6 +125,23 @@ def Start_Update_Package():
     shutil.copy2(New_Server_Package_path +'\\Combined\\FUR\\' + 'CombinBuild.Log' , 
                  Release_Package_path +'\\HPFWUPDREC\\')
 
+def alter(file,old_str,new_str):
+     """
+     替換檔案中的字串
+     :param file:檔名
+     :param old_str:就字串
+     :param new_str:新字串
+     :return:
+     """
+      file_data = ""
+     with open(file, "r", encoding="utf-8") as f:
+         for line in f:
+            if old_str in line:
+                 line = line.replace(old_str,new_str)
+             file_data += line
+     with open(file,"w",encoding="utf-8") as f:
+         f.write(file_data)
+ 
 
 def show_Message(msg):
     # hide main window
