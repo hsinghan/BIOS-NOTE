@@ -11,7 +11,7 @@ from tkinter import messagebox
 New_Version_Num = "" # Ex : S91_000200
 Old_Version_Num = "" # Ex : S91_000100
 
-New_Server_Package_path = ""
+New_Server_Package_path = "" 
 Release_Package_path = ""
 
 server_package_path_list = ['\\Combined\\FUR', 
@@ -34,7 +34,7 @@ def Copy_all_files(src_path, des_path):
         file_full_path = os.path.join(src_path, item)
         print('File {file_name} copy to {des_folder_path}'.format(file_name=item ,des_folder_path=des_path))
         try:
-            shutil.copy(file_full_path, des_path)
+            shutil.copy2(file_full_path, des_path)
         except IOError as e:
             print("Unable to copy file. %s" % e)
         except:
@@ -56,7 +56,7 @@ def Replace_all_files(package_path, server_package_path):
     if os.path.isdir(package_path) and os.path.isdir(server_package_path):
         print("Both of paths exits")
         Delete_all_files(package_path)
-        Copy_all_files(server_package_path, package_path, )
+        Copy_all_files(server_package_path, package_path)
     else:
         print("Unvalid dir path")
 
@@ -87,7 +87,15 @@ def Start_Update_Package():
     shutil.copy(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , Release_Package_path +'\\BUFF')
 
     # Update Capsule folder
-    
+    Replace_all_files(Release_Package_path + '\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)', 
+                      New_Server_Package_path + '\\Combined\\WU')
+    Replace_all_files(Release_Package_path + '\\Capsule\\Linux\\Combined FW Image (BIOS, ME, PD)', 
+                      New_Server_Package_path + '\\Combined\\Linux')
+    Replace_all_files(Release_Package_path + '\\Capsule\\Windows\\Thunderbolt', 
+                      New_Server_Package_path + '\\TBT')
+    Replace_all_files(Release_Package_path + '\\Capsule\\Linux\\Thunderbolt', 
+                      New_Server_Package_path + '\\TBT')
+
     # Update FPTW folder
 
     # Update GLOBAL folder
