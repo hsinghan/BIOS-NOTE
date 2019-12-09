@@ -7,9 +7,10 @@ from tkinter import filedialog
 from pathlib import Path
 from tkinter import messagebox
 
-Project_Code    = "" # Ex : S91
-New_Version_Num = "" # Ex : 000200
-Old_Version_Num = "" # Ex : 000100
+
+New_Version_Num = "" # Ex : S91_000200
+Old_Version_Num = "" # Ex : S91_000100
+
 New_Server_Package_path = ""
 Release_Package_path = ""
 
@@ -70,22 +71,28 @@ def check_path_and_version():
         show_Message("The Old BIOS Version can not be empty")
         return
 
-    print("Version is OK!!")
-
 def Start_Update_Package():
     # data_folder = Path("source_data/text_files/")
     # file_to_open = data_folder / "raw_data.txt"
     # f = open(file_to_open)
-    # Update BUFF
-    # Update Capsule
-    # Update FPTW
-    # Update GLOBAL
-    # Update FUR
+
     global New_Version_Num, Old_Version_Num
+    global New_Server_Package_path, Release_Package_path
 
     New_Version_Num = firstlandString.get()
     Old_Version_Num = SecondlandString.get()
     check_path_and_version()
+    # Update BUFF folder
+    os.remove(Release_Package_path +'\\BUFF' + '\\' + Old_Version_Num + '_32.bin')
+    shutil.copy(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , Release_Package_path +'\\BUFF')
+
+    # Update Capsule folder
+    
+    # Update FPTW folder
+
+    # Update GLOBAL folder
+
+    # Update FUR folder
 
 
 def show_Message(msg):
@@ -129,10 +136,10 @@ if __name__ == '__main__':
     app_windows = tk.Tk() 
 
     app_windows.title('Update Release Package(Beta version)')
-    app_windows.geometry('600x400')
+    app_windows.geometry('600x300')
     app_windows.wm_iconbitmap('coffee.ico')
     # Prevent Window From Resizing
-    #app_windows.resizable(False, False)
+    app_windows.resizable(False, False)
 
     #app_windows.configure(background = '#4D4D4D')
     #Set logo
@@ -174,14 +181,13 @@ if __name__ == '__main__':
     #SecondlandString.set('S91_000800')
     version_text_field = tk.Entry(app_windows, show=None, font=('Arial', 12), width=20, textvariable=SecondlandString)  # 顯示成明文形式
     version_text_field.place(x=170, y=195)
-    Old_Version_Num = SecondlandString.get()
 
 # ------------------------------------------------------------------------------
     UpdateButton = tk.Button(app_windows, text = 'Update', font=('Arial', 13), command=Start_Update_Package)
-    UpdateButton.place(x=160, y=250)
+    UpdateButton.place(x=430, y=250)
 
     ExitButton = tk.Button(app_windows, text = 'Exit', font=('Arial', 13), command=client_exit)
-    ExitButton.place(x=260, y=250)
+    ExitButton.place(x=530, y=250)
 
     app_windows.mainloop()
     # update files
