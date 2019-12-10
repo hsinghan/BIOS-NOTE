@@ -10,9 +10,9 @@ from tkinter import messagebox
 
 New_Version_Num = "" # Ex : S91_000200 
 Old_Version_Num = "" # Ex : S91_000100 
-
-New_Server_Package_path = ""
-Release_Package_path = ""
+ 
+New_Server_Package_path = "" 
+Release_Package_path = "" 
 
 server_package_path_list = ['\\Combined\\FUR', 
                             '\\Combined\\WU', 
@@ -83,43 +83,74 @@ def Start_Update_Package():
     Old_Version_Num = SecondlandString.get()
     check_path_and_version()
     # Update BUFF folder
-    os.remove(Release_Package_path +'\\BUFF\\' + Old_Version_Num + '_32.bin')
-    shutil.copy2(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , Release_Package_path +'\\BUFF')
+    os.remove(str(Release_Package_path) +'\\BUFF\\' + Old_Version_Num + '_32.bin')
+    shutil.copy2(str(New_Server_Package_path)+'\\' + New_Version_Num + '_32.bin' , str(Release_Package_path) +'\\BUFF')
 
     # Update Capsule folder
-    Replace_all_files(Release_Package_path + '\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)', 
-                      New_Server_Package_path + '\\Combined\\WU')
-    Replace_all_files(Release_Package_path + '\\Capsule\\Linux\\Combined FW Image (BIOS, ME, PD)', 
-                      New_Server_Package_path + '\\Combined\\Linux')
-    Replace_all_files(Release_Package_path + '\\Capsule\\Windows\\Thunderbolt', 
-                      New_Server_Package_path + '\\TBT')
-    Replace_all_files(Release_Package_path + '\\Capsule\\Linux\\Thunderbolt', 
-                      New_Server_Package_path + '\\TBT')
+    Replace_all_files(str(Release_Package_path) + '\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)', 
+                      str(New_Server_Package_path) + '\\Combined\\WU')
+    Replace_all_files(str(Release_Package_path) + '\\Capsule\\Linux\\Combined FW Image (BIOS, ME, PD)', 
+                      str(New_Server_Package_path) + '\\Combined\\Linux')
+    Replace_all_files(str(Release_Package_path) + '\\Capsule\\Windows\\Thunderbolt', 
+                      str(New_Server_Package_path) + '\\TBT')
+    Replace_all_files(str(Release_Package_path) + '\\Capsule\\Linux\\Thunderbolt', 
+                      str(New_Server_Package_path) + '\\TBT')
 
     # Update FPTW folder
+    os.remove(str(Release_Package_path) +'\\FPTW\\' + Old_Version_Num + '_32.bin')
+    shutil.copy2(str(New_Server_Package_path) +'\\' + New_Version_Num + '_32.bin' , str(Release_Package_path) +'\\FPTW')
+
+    revise_batch_file(str(Release_Package_path) +'\\FPTW\\Update32.bat', 
+                      Old_Version_Num + '_32.bin',
+                      New_Version_Num + '_32.bin')
+
+    revise_batch_file(str(Release_Package_path) +'\\FPTW\\Update64.bat', 
+                      Old_Version_Num + '_32.bin',
+                      New_Version_Num + '_32.bin')
+
 
     # Update GLOBAL folder
-    os.remove(Release_Package_path +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '_32.bin')
-    shutil.copy2(New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' , 
-                Release_Package_path +'\\GLOBAL\\BIOS')
+    os.remove(str(Release_Package_path) +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '_32.bin')
+    shutil.copy2(str(New_Server_Package_path) +'\\' + New_Version_Num + '_32.bin' , 
+                 str(Release_Package_path) +'\\GLOBAL\\BIOS')
 
-    os.remove(Release_Package_path +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '.bin')
-    shutil.copy2(New_Server_Package_path +'\\' + New_Version_Num + '.bin' , 
-                Release_Package_path +'\\GLOBAL\\BIOS')
+    os.remove(str(Release_Package_path) +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '.bin')
+    shutil.copy2(str(New_Server_Package_path) +'\\' + New_Version_Num + '.bin' , 
+                 str(Release_Package_path) +'\\GLOBAL\\BIOS')
 
     # Update FUR folder
-    os.remove(Release_Package_path +'\\HPFWUPDREC\\' + Old_Version_Num + '.bin')
-    shutil.copy2(New_Server_Package_path +'\\Combined\\FUR\\' + New_Version_Num + '.bin' , 
-                 Release_Package_path +'\\HPFWUPDREC\\')
+    os.remove(str(Release_Package_path) +'\\HPFWUPDREC\\' + Old_Version_Num + '.bin')
+    shutil.copy2(str(New_Server_Package_path) +'\\Combined\\FUR\\' + New_Version_Num + '.bin' , 
+                 str(Release_Package_path) +'\\HPFWUPDREC\\')
 
-    os.remove(Release_Package_path +'\\HPFWUPDREC\\' + Old_Version_Num + '.inf')
-    shutil.copy2(New_Server_Package_path +'\\Combined\\FUR\\' + New_Version_Num + '.inf' , 
-                 Release_Package_path +'\\HPFWUPDREC\\')
+    os.remove(str(Release_Package_path) +'\\HPFWUPDREC\\' + Old_Version_Num + '.inf')
+    shutil.copy2(str(New_Server_Package_path) +'\\Combined\\FUR\\' + New_Version_Num + '.inf' , 
+                 str(Release_Package_path) +'\\HPFWUPDREC\\')
 
-    os.remove(Release_Package_path +'\\HPFWUPDREC\\' + 'CombinBuild.Log')
-    shutil.copy2(New_Server_Package_path +'\\Combined\\FUR\\' + 'CombinBuild.Log' , 
-                 Release_Package_path +'\\HPFWUPDREC\\')
+    os.remove(str(Release_Package_path) +'\\HPFWUPDREC\\' + 'CombinBuild.Log')
+    shutil.copy2(str(New_Server_Package_path) +'\\Combined\\FUR\\' + 'CombinBuild.Log' , 
+                 str(Release_Package_path) +'\\HPFWUPDREC\\')
+    show_Message("Update Completed!!!")
 
+
+def revise_batch_file(file, old_str, new_str):
+     """
+     replace string in file.
+     :param file name
+     :param old_str
+     :param new_str
+     :return:
+     """
+     text_data = ""
+     with open(file, "r", encoding="utf-8") as f:
+         for line in f:
+             if old_str in line:
+                  line = line.replace(old_str,new_str)
+             text_data += line
+     
+     with open(file,"w",encoding="utf-8") as f:
+         f.write(text_data)
+ 
 
 def show_Message(msg):
     # hide main window
@@ -132,10 +163,11 @@ def callbackFunc():
     print(resultString)
 
 def fileDialog():
+    global New_Server_Package_path
     app_windows.filename = filedialog.askdirectory()
     app_windows.label = ttk.Label(app_windows.labelFrame, text = app_windows.filename)
     app_windows.label.grid(column = 1, row = 1)
-    New_Server_Package_path = Path(app_windows.filename)
+    New_Server_Package_path = str(Path(app_windows.filename))
     print(New_Server_Package_path)
 
 def Browse_button(app_windows, x, y):
@@ -143,10 +175,11 @@ def Browse_button(app_windows, x, y):
     app_windows.button.grid(column = x, row = y)
 
 def fileDialog2():
+    global Release_Package_path
     app_windows.filename = filedialog.askdirectory()
     app_windows.label2 = ttk.Label(app_windows.labelFrame2, text = app_windows.filename)
     app_windows.label2.grid(column = 1, row = 8)
-    Release_Package_path = Path(app_windows.filename)
+    Release_Package_path = str(Path(app_windows.filename))
     print(Release_Package_path)
 
 def Browse_button2(app_windows, x, y):
@@ -156,13 +189,14 @@ def Browse_button2(app_windows, x, y):
 def client_exit():
     exit()
 
+
 if __name__ == '__main__':
     # create an windows to fetch the folder path
 
     app_windows = tk.Tk() 
 
     app_windows.title('Update Release Package(Beta version)')
-    app_windows.geometry('600x300')
+    app_windows.geometry('800x300')
     app_windows.wm_iconbitmap('coffee.ico')
     # Prevent Window From Resizing
     app_windows.resizable(False, False)
@@ -186,7 +220,7 @@ if __name__ == '__main__':
     msg2.place(x=340, y=76)
 
     firstlandString = tk.StringVar()
-    #firstlandString.set('S91_000800')
+
     version_text_field = tk.Entry(app_windows, show=None, font=('Arial', 11), width=20, textvariable=firstlandString)  # 顯示成明文形式
     version_text_field.place(x=170, y=85)
     
@@ -210,10 +244,10 @@ if __name__ == '__main__':
 
 # ------------------------------------------------------------------------------
     UpdateButton = tk.Button(app_windows, text = 'Update', font=('Arial', 13), command=Start_Update_Package)
-    UpdateButton.place(x=430, y=250)
+    UpdateButton.place(x=630, y=250)
 
     ExitButton = tk.Button(app_windows, text = 'Exit', font=('Arial', 13), command=client_exit)
-    ExitButton.place(x=530, y=250)
+    ExitButton.place(x=730, y=250)
 
     app_windows.mainloop()
     # update files
