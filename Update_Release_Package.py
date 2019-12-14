@@ -7,25 +7,11 @@ from tkinter import filedialog
 from pathlib import Path
 from tkinter import messagebox
 
-
 New_Version_Num = "" # Ex : S91_000200 
 Old_Version_Num = "" # Ex : S91_000100 
  
 New_Server_Package_path = "" 
 Release_Package_path = "" 
-
-server_package_path_list = ['\\Combined\\FUR', 
-                            '\\Combined\\WU', 
-                            '\\ME', 
-                            '\\TBT' ]
-
-Release_Package_path_list = ['\\BUFF', 
-                             '\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)',
-                             '\\Capsule\\Windows\\Thunderbolt',
-                             '\\FPTW',
-                             '\\GLOBAL\\BIOS',
-                             '\\HPFWUPDREC',
-                             '\\XML']
 
 def Copy_all_files(src_path, des_path):
     File_list = os.listdir(src_path)
@@ -50,7 +36,7 @@ def Delete_all_files(path):
 
 def Replace_all_files(package_path, server_package_path):
     """
-    Delet all files under package_path path, 
+    Delete all files under package_path path, 
     and copy all files from server_package_path to package_path.
     """
     if os.path.isdir(package_path) and os.path.isdir(server_package_path):
@@ -80,11 +66,54 @@ def check_path_and_version():
         show_Message("The Old BIOS Version can not be empty")
         return
 
-def Start_Update_Package():
-    # data_folder = Path("source_data/text_files/")
-    # file_to_open = data_folder / "raw_data.txt"
-    # f = open(file_to_open)
+def Update_Capsule_folder(Release_Package_path, New_Server_Package_path):
+    src_list = ['\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)',
+                '\\Capsule\\Linux\\Combined FW Image (BIOS, ME, PD)',
+                '\\Capsule\\Windows\\Thunderbolt',
+                '\\Capsule\\Linux\\Thunderbolt'] 
 
+    des_list = ['\\Combined\\WU',
+                '\\Combined\\Linux',
+                '\\TBT',
+                '\\TBT']    
+
+    for src_item, des_item in zip(src_list, des_list):
+        Replace_all_files(Release_Package_path + src_item, New_Server_Package_path + des_item)
+
+
+def Update_HPFWUPDREC_folder(Release_Package_path, New_Server_Package_path):
+    Replace_one_file(Release_Package_path +'\\HPFWUPDREC\\' + Old_Version_Num + '.bin',
+                     New_Server_Package_path +'\\Combined\\FUR\\' + New_Version_Num + '.bin')
+
+    Replace_one_file(Release_Package_path +'\\HPFWUPDREC\\' + Old_Version_Num + '.inf', 
+                     New_Server_Package_path +'\\Combined\\FUR\\' + New_Version_Num + '.inf' )
+
+    Replace_one_file(Release_Package_path +'\\HPFWUPDREC\\' + 'CombinBuild.Log',
+                     New_Server_Package_path +'\\Combined\\FUR\\' + 'CombinBuild.Log')
+
+
+def Update_FPTW_folder(Release_Package_path, New_Server_Package_path):
+    Replace_one_file(Release_Package_path +'\\FPTW\\' + Old_Version_Num + '_32.bin',
+                     New_Server_Package_path +'\\' + New_Version_Num + '_32.bin')
+
+    revise_batch_file(Release_Package_path +'\\FPTW\\Update32.bat', 
+                      Old_Version_Num + '_32.bin',
+                      New_Version_Num + '_32.bin')
+
+    revise_batch_file(Release_Package_path +'\\FPTW\\Update64.bat', 
+                      Old_Version_Num + '_32.bin',
+                      New_Version_Num + '_32.bin')
+
+
+def Update_GLOBAL_folder(Release_Package_path, New_Server_Package_path):
+    Replace_one_file(Release_Package_path +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '_32.bin',
+                     New_Server_Package_path +'\\' + New_Version_Num + '_32.bin' )
+
+    Replace_one_file(Release_Package_path +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '.bin',
+                     New_Server_Package_path +'\\' + New_Version_Num + '.bin')
+
+
+def Start_Update_Package():
     global New_Version_Num, Old_Version_Num
     global New_Server_Package_path, Release_Package_path
 
@@ -93,48 +122,20 @@ def Start_Update_Package():
     check_path_and_version()
 
     # Update BUFF folder
-    Replace_one_file(str(Release_Package_path) +'\\BUFF\\' + Old_Version_Num + '_32.bin',
-                     str(New_Server_Package_path)+'\\' + New_Version_Num + '_32.bin')
+    Replace_one_file(Release_Package_path +'\\BUFF\\' + Old_Version_Num + '_32.bin',
+                     New_Server_Package_path +'\\' + New_Version_Num + '_32.bin')
 
-    # # Update Capsule folder
-    Replace_all_files(str(Release_Package_path) + '\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)', 
-                      str(New_Server_Package_path) + '\\Combined\\WU')
-    Replace_all_files(str(Release_Package_path) + '\\Capsule\\Linux\\Combined FW Image (BIOS, ME, PD)', 
-                      str(New_Server_Package_path) + '\\Combined\\Linux')
-    Replace_all_files(str(Release_Package_path) + '\\Capsule\\Windows\\Thunderbolt', 
-                      str(New_Server_Package_path) + '\\TBT')
-    Replace_all_files(str(Release_Package_path) + '\\Capsule\\Linux\\Thunderbolt', 
-                      str(New_Server_Package_path) + '\\TBT')
+    # Update Capsule folder
+    Update_Capsule_folder(Release_Package_path, New_Server_Package_path)
 
-    # # Update FPTW folder
+    # Update FPTW folder
+    Update_FPTW_folder(Release_Package_path, New_Server_Package_path)
 
-    Replace_one_file(str(Release_Package_path) +'\\FPTW\\' + Old_Version_Num + '_32.bin',
-                     str(New_Server_Package_path) +'\\' + New_Version_Num + '_32.bin')
+    # Update GLOBAL folder
+    Update_GLOBAL_folder(Release_Package_path, New_Server_Package_path)
 
-    revise_batch_file(str(Release_Package_path) +'\\FPTW\\Update32.bat', 
-                      Old_Version_Num + '_32.bin',
-                      New_Version_Num + '_32.bin')
-
-    revise_batch_file(str(Release_Package_path) +'\\FPTW\\Update64.bat', 
-                      Old_Version_Num + '_32.bin',
-                      New_Version_Num + '_32.bin')
-
-    # # Update GLOBAL folder
-    Replace_one_file(str(Release_Package_path) +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '_32.bin',
-                     str(New_Server_Package_path) +'\\' + New_Version_Num + '_32.bin' )
-
-    Replace_one_file(str(Release_Package_path) +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '.bin',
-                     str(New_Server_Package_path) +'\\' + New_Version_Num + '.bin')
-
-    # # Update FUR folder
-    Replace_one_file(str(Release_Package_path) +'\\HPFWUPDREC\\' + Old_Version_Num + '.bin',
-                     str(New_Server_Package_path) +'\\Combined\\FUR\\' + New_Version_Num + '.bin')
-
-    Replace_one_file(str(Release_Package_path) +'\\HPFWUPDREC\\' + Old_Version_Num + '.inf', 
-                     str(New_Server_Package_path) +'\\Combined\\FUR\\' + New_Version_Num + '.inf' )
-
-    Replace_one_file(str(Release_Package_path) +'\\HPFWUPDREC\\' + 'CombinBuild.Log',
-                    str(New_Server_Package_path) +'\\Combined\\FUR\\' + 'CombinBuild.Log')
+    # Update FUR folder
+    Update_HPFWUPDREC_folder(Release_Package_path, New_Server_Package_path)
 
     show_Message("Update Completed!!!")
 
@@ -182,11 +183,11 @@ def Browse_button(app_windows, x, y):
 
 def fileDialog2():
     global Release_Package_path
+
     app_windows.filename = filedialog.askdirectory()
     app_windows.label2 = ttk.Label(app_windows.labelFrame2, text = app_windows.filename)
     app_windows.label2.grid(column = 1, row = 8)
     Release_Package_path = str(Path(app_windows.filename))
-    print(Release_Package_path)
 
 def Browse_button2(app_windows, x, y):
     app_windows.button2 = tk.Button(app_windows.labelFrame2, text = "Browse A Folder",command = fileDialog2)
