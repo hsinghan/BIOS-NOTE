@@ -170,12 +170,19 @@ def show_Message(msg):
 def fileDialog():
     global New_Server_Package_path, New_Version_Num
     app_windows.filename = filedialog.askdirectory()
-    app_windows.label = ttk.Label(app_windows.labelFrame, text = app_windows.filename)
-    app_windows.label.grid(column = 1, row = 1)
     New_Server_Package_path = str(Path(app_windows.filename))
-    New_Version_Num = get_Version_Num(New_Server_Package_path)
-    version_text_field = tk.Label(app_windows, text = New_Version_Num, font=('Arial', 11), width=10, height=2)
-    version_text_field.place(x=115, y=75)
+
+    if os.path.isdir(New_Server_Package_path + '\\Combined'):
+        app_windows.label = ttk.Label(app_windows.labelFrame, text = app_windows.filename)
+        app_windows.label.grid(column = 1, row = 1)
+        New_Version_Num = get_Version_Num(New_Server_Package_path)
+        version_text_field = tk.Label(app_windows, text = New_Version_Num, font=('Arial', 11), width=10, height=2)
+        version_text_field.place(x=115, y=75)
+    else:
+        show_Message("This is not the server package folder!!!")
+        version_text_field = tk.Label(app_windows, text = '', width=15, height=2)
+        version_text_field.place(x=115, y=75)
+        return
 
 
 def get_Version_Num(path):
@@ -198,12 +205,19 @@ def Browse_button(app_windows, x, y):
 def fileDialog2():
     global Release_Package_path, Old_Version_Num
     app_windows.filename = filedialog.askdirectory()
-    app_windows.label2 = ttk.Label(app_windows.labelFrame2, text = app_windows.filename)
-    app_windows.label2.grid(column = 1, row = 8)
     Release_Package_path = str(Path(app_windows.filename))
-    Old_Version_Num = get_Version_Num(Release_Package_path + '\\HPFWUPDREC')
-    version_text_field = tk.Label(app_windows, text = Old_Version_Num, font=('Arial', 11), width=10, height=2)
-    version_text_field.place(x=115, y=193)
+
+    if os.path.isdir(Release_Package_path+ '\\HPFWUPDREC'):
+        app_windows.label2 = ttk.Label(app_windows.labelFrame2, text = app_windows.filename)
+        app_windows.label2.grid(column = 1, row = 8)
+        Old_Version_Num = get_Version_Num(Release_Package_path + '\\HPFWUPDREC')
+        version_text_field = tk.Label(app_windows, text = Old_Version_Num, font=('Arial', 11), width=10, height=2)
+        version_text_field.place(x=115, y=193)
+    else:
+        show_Message("This is not the Release package folder!!!")
+        version_text_field = tk.Label(app_windows, text = '', width=15, height=2)
+        version_text_field.place(x=115, y=193)
+        return
 
 
 def Browse_button2(app_windows, x, y):
