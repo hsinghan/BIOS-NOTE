@@ -1,6 +1,7 @@
 import shutil
 import os
 #from tkinter import * 
+import re
 import tkinter as tk 
 from tkinter import ttk
 from tkinter import filedialog
@@ -117,8 +118,6 @@ def Start_Update_Package():
     global New_Version_Num, Old_Version_Num
     global New_Server_Package_path, Release_Package_path
 
-    New_Version_Num = firstlandString.get()
-    Old_Version_Num = SecondlandString.get()
     check_path_and_version()
 
     # Update BUFF folder
@@ -165,29 +164,42 @@ def show_Message(msg):
     root.withdraw()
     messagebox.showinfo("Notification", msg)
 
-def callbackFunc():
-    resultString.set("{} - {}".format(firstlandString.get(),SecondlandString.get()))
-    print(resultString)
 
 def fileDialog():
-    global New_Server_Package_path
+    global New_Server_Package_path, New_Version_Num
     app_windows.filename = filedialog.askdirectory()
     app_windows.label = ttk.Label(app_windows.labelFrame, text = app_windows.filename)
     app_windows.label.grid(column = 1, row = 1)
     New_Server_Package_path = str(Path(app_windows.filename))
-    print(New_Server_Package_path)
+    New_Version_Num = get_Version_Num(New_Server_Package_path)
+    version_text_field = tk.Label(app_windows, text = New_Version_Num, font=('Arial', 11), width=10, height=2)
+    version_text_field.place(x=115, y=75)
+
+def get_Version_Num(path):
+    file_list = os.listdir(path)
+    rx = r'^[A-Z][0-9][0-9]_[A-Za-z0-9]{6}\\*'
+    for item in file_list:
+        if re.search(rx, item):
+           print(item.split('.')[0])
+           return item.split('.')[0]
+    else:
+        print('Not found')
+
 
 def Browse_button(app_windows, x, y):
     app_windows.button = tk.Button(app_windows.labelFrame, text = "Browse A Folder",command = fileDialog)
     app_windows.button.grid(column = x, row = y)
 
 def fileDialog2():
-    global Release_Package_path
-
+    global Release_Package_path, Old_Version_Num
     app_windows.filename = filedialog.askdirectory()
     app_windows.label2 = ttk.Label(app_windows.labelFrame2, text = app_windows.filename)
     app_windows.label2.grid(column = 1, row = 8)
     Release_Package_path = str(Path(app_windows.filename))
+    Old_Version_Num = get_Version_Num(Release_Package_path + '\\HPFWUPDREC')
+    version_text_field = tk.Label(app_windows, text = Old_Version_Num, font=('Arial', 11), width=10, height=2)
+    version_text_field.place(x=115, y=193)
+
 
 def Browse_button2(app_windows, x, y):
     app_windows.button2 = tk.Button(app_windows.labelFrame2, text = "Browse A Folder",command = fileDialog2)
@@ -221,33 +233,20 @@ if __name__ == '__main__':
     # app_windows.button.grid(column = 0, row = 1)
     Browse_button(app_windows,0, 1)
 
-    msg1 = tk.Label(app_windows, text='Enter New BIOS Version:', font=('Arial', 11), width=0, height=2)
+    msg1 = tk.Label(app_windows, text='New BIOS Version:', font=('Arial', 10), width=0, height=2)
     msg1.place(x=0, y=75)
-    msg2 = tk.Label(app_windows, text='Ex:S91_000200', font=('Arial', 10), width=0, height=2)
-    msg2.place(x=340, y=76)
-
-    firstlandString = tk.StringVar()
-
-    version_text_field = tk.Entry(app_windows, show=None, font=('Arial', 11), width=20, textvariable=firstlandString)  # 顯示成明文形式
-    version_text_field.place(x=170, y=85)
     
 # ------------------------------------------------------------------------------
     msg1 = tk.Label(app_windows, text='Choose Release package folder path', font=('Arial', 12), width=0, height=2)
-    msg1.place(x=0, y=110)
+    msg1.place(x=0, y=120)
 
     app_windows.labelFrame2 = ttk.LabelFrame(app_windows, text = "")
-    app_windows.labelFrame2.place(x=0, y=140)
+    app_windows.labelFrame2.place(x=0, y=150)
     Browse_button2(app_windows,0, 8)
 
-    msg1 = tk.Label(app_windows, text='Enter Old BIOS Version:', font=('Arial', 11), width=0, height=2)
-    msg1.place(x=0, y=185)
-    msg2 = tk.Label(app_windows, text='Ex:S91_000100', font=('Arial', 10), width=0, height=2)
-    msg2.place(x=360, y=185)
+    msg1 = tk.Label(app_windows, text='Old BIOS Version:', font=('Arial', 10), width=0, height=2)
+    msg1.place(x=0, y=193)
 
-    SecondlandString = tk.StringVar()
-    #SecondlandString.set('S91_000800')
-    version_text_field = tk.Entry(app_windows, show=None, font=('Arial', 12), width=20, textvariable=SecondlandString)  # 顯示成明文形式
-    version_text_field.place(x=170, y=195)
 
 # ------------------------------------------------------------------------------
     UpdateButton = tk.Button(app_windows, text = 'Update', font=('Arial', 13), command=Start_Update_Package)
