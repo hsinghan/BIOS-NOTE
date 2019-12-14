@@ -1,6 +1,5 @@
 import shutil
 import os
-#from tkinter import * 
 import re
 import tkinter as tk 
 from tkinter import ttk
@@ -27,6 +26,7 @@ def Copy_all_files(src_path, des_path):
         except:
             print("Unexpected error:", sys.exc_info())
 
+
 def Delete_all_files(path):
     input_path = os.listdir(path)
     print(input_path)
@@ -34,6 +34,7 @@ def Delete_all_files(path):
         file_path = os.path.join(path, item)
         print(file_path)
         os.remove(file_path)
+
 
 def Replace_all_files(package_path, server_package_path):
     """
@@ -66,6 +67,7 @@ def check_path_and_version():
     if Old_Version_Num == "":
         show_Message("The Old BIOS Version can not be empty")
         return
+
 
 def Update_Capsule_folder(Release_Package_path, New_Server_Package_path):
     src_list = ['\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)',
@@ -175,6 +177,7 @@ def fileDialog():
     version_text_field = tk.Label(app_windows, text = New_Version_Num, font=('Arial', 11), width=10, height=2)
     version_text_field.place(x=115, y=75)
 
+
 def get_Version_Num(path):
     file_list = os.listdir(path)
     rx = r'^[A-Z][0-9][0-9]_[A-Za-z0-9]{6}\\*'
@@ -184,11 +187,13 @@ def get_Version_Num(path):
            return item.split('.')[0]
     else:
         print('Not found')
+        return 'Can not get version number in this folder'
 
 
 def Browse_button(app_windows, x, y):
     app_windows.button = tk.Button(app_windows.labelFrame, text = "Browse A Folder",command = fileDialog)
     app_windows.button.grid(column = x, row = y)
+
 
 def fileDialog2():
     global Release_Package_path, Old_Version_Num
@@ -205,12 +210,12 @@ def Browse_button2(app_windows, x, y):
     app_windows.button2 = tk.Button(app_windows.labelFrame2, text = "Browse A Folder",command = fileDialog2)
     app_windows.button2.grid(column = x, row = y)
 
+
 def client_exit():
     exit()
 
 
 if __name__ == '__main__':
-    # create an windows to fetch the folder path
 
     app_windows = tk.Tk() 
 
@@ -229,8 +234,7 @@ if __name__ == '__main__':
 
     app_windows.labelFrame = ttk.LabelFrame(app_windows, text = "")
     app_windows.labelFrame.place(x=0, y=30)
-    # app_windows.button = tk.Button(app_windows.labelFrame, text = "Browse A Folder",command = app_windows.fileDialog)
-    # app_windows.button.grid(column = 0, row = 1)
+
     Browse_button(app_windows,0, 1)
 
     msg1 = tk.Label(app_windows, text='New BIOS Version:', font=('Arial', 10), width=0, height=2)
@@ -256,12 +260,5 @@ if __name__ == '__main__':
     ExitButton.place(x=730, y=250)
 
     app_windows.mainloop()
-    # update files
-    #Replace_all_files("C:\\github_repo\\BIOS-NOTE\\test1", "C:\\github_repo\\BIOS-NOTE\\test2")
-    # resultButton = tk.Button(app_windows, text = 'Get Result', command=callbackFunc)
-    # resultButton.place(x=0, y=300)
 
-    # resultString = tk.StringVar()
-    # resultLabel = tk.Label(app_windows, textvariable=resultString)
-    # resultLabel.place(x=100, y=300)
     
