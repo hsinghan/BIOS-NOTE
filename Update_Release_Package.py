@@ -1,6 +1,6 @@
 import shutil
 import os
-from tkinter import *
+#from tkinter import * 
 import tkinter as tk 
 from tkinter import ttk
 from tkinter import filedialog
@@ -60,6 +60,15 @@ def Replace_all_files(package_path, server_package_path):
     else:
         print("Unvalid dir path")
 
+
+def Replace_one_file(old_file_path, new_file_path):
+    if os.path.isfile(old_file_path) and os.path.isfile(new_file_path):
+        os.remove(old_file_path)
+        shutil.copy2(new_file_path, Path(old_file_path).parents[0])
+    else:
+        print("Unvalid dir path")
+
+
 def check_path_and_version():
     if New_Version_Num == "":
         show_Message("The New BIOS Version can not be empty")
@@ -82,11 +91,12 @@ def Start_Update_Package():
     New_Version_Num = firstlandString.get()
     Old_Version_Num = SecondlandString.get()
     check_path_and_version()
-    # Update BUFF folder
-    os.remove(str(Release_Package_path) +'\\BUFF\\' + Old_Version_Num + '_32.bin')
-    shutil.copy2(str(New_Server_Package_path)+'\\' + New_Version_Num + '_32.bin' , str(Release_Package_path) +'\\BUFF')
 
-    # Update Capsule folder
+    # Update BUFF folder
+    Replace_one_file(str(Release_Package_path) +'\\BUFF\\' + Old_Version_Num + '_32.bin',
+                     str(New_Server_Package_path)+'\\' + New_Version_Num + '_32.bin')
+
+    # # Update Capsule folder
     Replace_all_files(str(Release_Package_path) + '\\Capsule\\Windows\\Combined FW Image (BIOS, ME, PD)', 
                       str(New_Server_Package_path) + '\\Combined\\WU')
     Replace_all_files(str(Release_Package_path) + '\\Capsule\\Linux\\Combined FW Image (BIOS, ME, PD)', 
@@ -96,9 +106,10 @@ def Start_Update_Package():
     Replace_all_files(str(Release_Package_path) + '\\Capsule\\Linux\\Thunderbolt', 
                       str(New_Server_Package_path) + '\\TBT')
 
-    # Update FPTW folder
-    os.remove(str(Release_Package_path) +'\\FPTW\\' + Old_Version_Num + '_32.bin')
-    shutil.copy2(str(New_Server_Package_path) +'\\' + New_Version_Num + '_32.bin' , str(Release_Package_path) +'\\FPTW')
+    # # Update FPTW folder
+
+    Replace_one_file(str(Release_Package_path) +'\\FPTW\\' + Old_Version_Num + '_32.bin',
+                     str(New_Server_Package_path) +'\\' + New_Version_Num + '_32.bin')
 
     revise_batch_file(str(Release_Package_path) +'\\FPTW\\Update32.bat', 
                       Old_Version_Num + '_32.bin',
@@ -108,28 +119,23 @@ def Start_Update_Package():
                       Old_Version_Num + '_32.bin',
                       New_Version_Num + '_32.bin')
 
+    # # Update GLOBAL folder
+    Replace_one_file(str(Release_Package_path) +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '_32.bin',
+                     str(New_Server_Package_path) +'\\' + New_Version_Num + '_32.bin' )
 
-    # Update GLOBAL folder
-    os.remove(str(Release_Package_path) +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '_32.bin')
-    shutil.copy2(str(New_Server_Package_path) +'\\' + New_Version_Num + '_32.bin' , 
-                 str(Release_Package_path) +'\\GLOBAL\\BIOS')
+    Replace_one_file(str(Release_Package_path) +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '.bin',
+                     str(New_Server_Package_path) +'\\' + New_Version_Num + '.bin')
 
-    os.remove(str(Release_Package_path) +'\\GLOBAL\\BIOS\\' + Old_Version_Num + '.bin')
-    shutil.copy2(str(New_Server_Package_path) +'\\' + New_Version_Num + '.bin' , 
-                 str(Release_Package_path) +'\\GLOBAL\\BIOS')
+    # # Update FUR folder
+    Replace_one_file(str(Release_Package_path) +'\\HPFWUPDREC\\' + Old_Version_Num + '.bin',
+                     str(New_Server_Package_path) +'\\Combined\\FUR\\' + New_Version_Num + '.bin')
 
-    # Update FUR folder
-    os.remove(str(Release_Package_path) +'\\HPFWUPDREC\\' + Old_Version_Num + '.bin')
-    shutil.copy2(str(New_Server_Package_path) +'\\Combined\\FUR\\' + New_Version_Num + '.bin' , 
-                 str(Release_Package_path) +'\\HPFWUPDREC\\')
+    Replace_one_file(str(Release_Package_path) +'\\HPFWUPDREC\\' + Old_Version_Num + '.inf', 
+                     str(New_Server_Package_path) +'\\Combined\\FUR\\' + New_Version_Num + '.inf' )
 
-    os.remove(str(Release_Package_path) +'\\HPFWUPDREC\\' + Old_Version_Num + '.inf')
-    shutil.copy2(str(New_Server_Package_path) +'\\Combined\\FUR\\' + New_Version_Num + '.inf' , 
-                 str(Release_Package_path) +'\\HPFWUPDREC\\')
+    Replace_one_file(str(Release_Package_path) +'\\HPFWUPDREC\\' + 'CombinBuild.Log',
+                    str(New_Server_Package_path) +'\\Combined\\FUR\\' + 'CombinBuild.Log')
 
-    os.remove(str(Release_Package_path) +'\\HPFWUPDREC\\' + 'CombinBuild.Log')
-    shutil.copy2(str(New_Server_Package_path) +'\\Combined\\FUR\\' + 'CombinBuild.Log' , 
-                 str(Release_Package_path) +'\\HPFWUPDREC\\')
     show_Message("Update Completed!!!")
 
 
