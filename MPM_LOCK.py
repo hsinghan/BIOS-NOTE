@@ -28,5 +28,11 @@ if __name__ == '__main__':
     else:
         # myCmd = "BiosConfigUtility64.exe /set:MPM_LOCK.txt"
         # os.system(myCmd)
-        # os.system("shutdown /r /t 3")
-        print("OK")
+        MsgBox = tkinter.messagebox.askquestion('Exit Application','Do you want to restart the computer now?',icon = 'warning')
+        tkinter.withdraw()
+        if MsgBox == 'Yes': #The return type of MsgBox is bool 
+            print("Reboot now")
+            #os.system("shutdown /r /t 3")
+        else:
+            print("Do not reboot now")
+            show_Message('You need to restart the computer later for appling BIOS setting.')
